@@ -10,12 +10,12 @@
 #' `geo_level`, and `var_name`. If `FALSE`, specify `title`, `subtitle`, and `caption`.
 #' @param geo_name Name of the geographic area being represented.
 #' @param geo_level Name of the smallest geographic area in the data (e.g. state, neighborhood).
-#' @param var_level Name of the plotted variable.
+#' @param var_name Name of the plotted variable.
 #' @param title Plot title.
 #' @param subtitle Plot subtitle.
 #' @param caption Plot caption.
 #' @param faceted Defaults to `FALSE`, change to `TRUE` to use a faceted plot.
-#' @param faceted_var A variable to be passed into `ggplot2::vars()` when faceting.
+#' @param facet_var A variable to be passed into `ggplot2::vars()` when faceting.
 #' @param faceted_labs Labels for the faceted subplots.
 #' @import ggplot2
 #' @export

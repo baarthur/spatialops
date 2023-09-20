@@ -12,26 +12,11 @@
 #' @returns Original `x` with an additional column containing the distance to the closest  `y` feature.
 #' @details
 #' For each spatial object in x, calculate the distance to the nearest feature in y.
-#' @examples
-#' \dontrun{
-#' df <- osmdata::getbb(place_name = "times square, new york") %>%
-#' osmdata::opq() %>%
-#' osmdata::add_osm_feature(key = "amenity", value = "restaurant") %>%
-#' osmdata::osmdata_sf()
-#'
-#' df <- df$osm_points %>%
-#' dplyr::select(name, amenity, cuisine) %>%
-#' st_as_sf()
-#'
-#' dist_nearest(df[1,], df[2:17,], "dist_resto", id_feature = T)
-#' dist_nearest(df[1,], df[2:17,], "dist_resto")
-#' dist_nearest(df[1,], df[2:17,], id_feature = T)
-#' dist_nearest(df[1,], df[2:17,])
-#' }
+#' @example inst/examples/dist_nearest.R
 
 dist_nearest <- function(x, y, name, id_feature = F, geometry = geometry) {
   closest <- st_nearest_feature(x, y) %>%
-    tibble(id_closest = .)
+    tibble(id_closest = `.`)
 
   distance <- closest %>%
     left_join(rowid_to_column(y, "id_closest")) %>%
@@ -44,15 +29,16 @@ dist_nearest <- function(x, y, name, id_feature = F, geometry = geometry) {
       drop_units()
   } else {
     x <- x %>%
-      mutate(!!as.name(name) := st_distance(distance, ., by_element = TRUE), .before = geometry) %>%
+      mutate({{name}} := st_distance(distance, ., by_element = TRUE), .before = geometry) %>%
       drop_units()
   }
 
   if(id_feature == F) {
     return(x)
   } else {
-    x %>%
-      bind_cols(closest) %>%
-      return()
+    x <- x %>%
+      bind_cols(closest)
+
+    return(x)
   }
 }

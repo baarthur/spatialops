@@ -7,7 +7,7 @@
 #' @param key_sep Character string that separates a key from its value.
 #' @param pair_sep Character string that separates key-value pairs.
 #' @import tidyr
-#' @import sf
+#' @importFrom sf st_as_sf
 #' @export
 #' @returns A `sf` object.
 #' @details
@@ -15,6 +15,7 @@
 #' column
 
 maphub_to_sf <- function(data, values = description, key_sep = ": ", pair_sep = "\n") {
+  description <- key <- value <- NULL
   data <- data %>%
     separate_longer_delim(
       {{values}},
@@ -44,6 +45,7 @@ maphub_to_sf <- function(data, values = description, key_sep = ": ", pair_sep = 
 #' Very context-specific, columns created using maphub_to_sf() should match colum names here.
 
 maphub_tidy_lines <- function(data) {
+  title <- stroke <- geometry <- empresa <- numero_linha <- inaugura <- NULL
   data <- data %>%
     select(-title) %>%
     relocate(stroke:geometry, .after = everything()) %>%
@@ -66,6 +68,7 @@ maphub_tidy_lines <- function(data) {
 #' Very context-specific, columns created using maphub_to_sf() should match colum names here.
 
 maphub_tidy_stations <- function(data) {
+  title <- marker.color <- geometry <- nome_est <- numero_linha <- inaugura <- status <- NULL
   data <- data %>%
     select(-title) %>%
     relocate(c(marker.color:geometry), .after = everything()) %>%

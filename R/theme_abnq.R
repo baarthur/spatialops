@@ -3,7 +3,7 @@
 #' `{abnquarto}` template for `ggplot` objects.
 #' @param base_size Font baseline size. Defaults to 10pt.
 #' @param base_family Font family. Defaults to "Times" (for Times New Roman).
-#' @param base_line_size, base_rect_size Base stroke for lines and rectangles. Defaults to dividing
+#' @param base_line_size,base_rect_size Base stroke for lines and rectangles. Defaults to dividing
 #' the font baseline size by 22 (`ggplot`'s default).
 #' @import ggplot2
 #' @export
@@ -67,12 +67,10 @@ theme_abnq <- function (base_size = 10, base_family = "Times", base_line_size = 
 #' `{abnquarto}` template for `ggplot`. Void version to use with maps.
 #' @param base_size Font baseline size. Defaults to 10pt.
 #' @param base_family Font family. Defaults to "Times" (for Times New Roman).
-#' @param base_line_size, base_rect_size Base stroke for lines and rectangles. Defaults to dividing
-#' the font baseline size by 22 (`ggplot`'s default).
 #' @import ggplot2
 #' @export
 #' @examples
-#' #' \dontrun{
+#' \dontrun{
 #' data(mtcars)
 #' p <- mtcars %>%
 #'   ggplot() +

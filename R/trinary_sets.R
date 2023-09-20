@@ -18,12 +18,14 @@
 
 trinary_sets <- function(df, cat1, cat2, keep.overlap = F) {
 
+  x <- y <- geometry <- NULL
+
 # ground rules --------------------------------------------------------------------------------
 
   ## get original categores
   cats <- df %>% dplyr::pull({{cat1}}) %>% unique()
 
-  if(length(cats) != 3) break else
+  if(length(cats) != 3) stop("Error: {df} has more than three classes") else
 
   ## replace them by ABC
   df <- df %>% dplyr::mutate(

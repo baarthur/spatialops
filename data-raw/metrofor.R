@@ -1,10 +1,5 @@
-## code to prepare `metrofor` dataset goes here
-
-usethis::use_data(metrofor, overwrite = TRUE)
-
 # tidyverse
 library(dplyr)
-library(ggplot2)
 
 # geocomputation
 library(sf)
@@ -35,9 +30,8 @@ metrofor <- query_for$osm_lines %>%
   filter((is.na(operator)| operator != "FTL") & !(service %in% c("yard", "spur")) & railway != "construction") %>%
   select(osm_id, name, railway, start_date = opening_date, station) %>%
   bind_rows(metrofor) %>%
+  mutate(name = stringi::stri_trans_general(stringr::str_to_lower(name), "Latin-ASCII")) %>%
   arrange(railway)
-
-remove(fortaleza, metrofor)
 
 #bbox <- st_union(metrofor, fortaleza) %>% st_bbox()
 
@@ -55,3 +49,5 @@ remove(fortaleza, metrofor)
 #   ) +
 #   coord_sf(xlim = bbox[c(1,3)], ylim = bbox[c(2,4)]) +
 #   theme_void()
+
+usethis::use_data(metrofor, overwrite = TRUE)
