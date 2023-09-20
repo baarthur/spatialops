@@ -4,7 +4,7 @@ Title: My functions used in the dissertation and elsewhere
 Version: 0.1.0
 Author: person("Arthur", "Bazolli", email = "baarthur0@outlook.com", role = c("aut", "cre"))
 Description: Mainly spatial operations, like calculating distances or classifying catchment areas, 
-but also handy tools like ggplot wrappers.  
+  but also handy tools like ggplot wrappers.  
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
