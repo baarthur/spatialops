@@ -62,7 +62,7 @@ gg_rqs <- function(rqs, var, labels = NULL,
       geom_hline(yintercept = 0, linetype = "dashed", color = zero_color)
   }
 
-  if(!is.null(labs)) {
+  if(!is.null(labels)) {
     p <- p + do.call(labs, labels)
   }
 

@@ -1,6 +1,6 @@
 Package: spatialops
 Title: Spatial operations that comes in handy
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: 
     person("Arthur", "Bazolli", email = "baarthur0@outlook.com", role = c("aut", "cre"))
 Description: Mainly spatial operations, like calculating distances or classifying catchment areas, 
