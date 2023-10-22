@@ -2,7 +2,7 @@
 % Please edit documentation in R/geom_sf_rais.R
 \name{geom_sf_rais}
 \alias{geom_sf_rais}
-\title{RAIS thematic maps using ggplot}
+\title{RAIS maps using ggplot}
 \usage{
 geom_sf_rais(
   x,
@@ -11,6 +11,7 @@ geom_sf_rais(
   direction = 1,
   data_format = c("absolute", "relative"),
   data_level = c("level", "growth"),
+  data = NULL,
   auto.labels = TRUE,
   geo_name = NULL,
   geo_level = NULL,
@@ -24,7 +25,7 @@ geom_sf_rais(
 )
 }
 \arguments{
-\item{x}{A \code{data.frame} to plot or an object convertible to it.}
+\item{x}{Plot variable.}
 
 \item{scale_theme}{Palette theme to be used in the plots, currently "distiller" and "viridis" are supported}
 
@@ -36,6 +37,9 @@ geom_sf_rais(
 \item{data_format}{Specify if data is in absolute (default) or relative format.}
 
 \item{data_level}{Specify if data represents a point value or growth between two periods.}
+
+\item{data}{An object with classes \code{sf} and \code{data.frame} (or convertible to it, see
+\code{\link[ggplot2:fortify]{ggplot2::fortify()}}). Optional; will inherit data from previous layers if provided.}
 
 \item{auto.labels}{When \code{TRUE}, automatically generates title, subtitle, and caption based on \code{geo_name},
 \code{geo_level}, and \code{var_name}. If \code{FALSE}, specify \code{title}, \code{subtitle}, and \code{caption}.}
@@ -62,5 +66,11 @@ geom_sf_rais(
 A \code{ggplot} object
 }
 \description{
-RAIS thematic maps using ggplot
+An easy way to make maps with data from the Brazilian employer-employee dataset. This function
+requires an already spatialized dataset
+}
+\examples{
+\dontrun{
+print("Hello world!")
+}
 }

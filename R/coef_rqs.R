@@ -6,7 +6,7 @@
 #'    This makes it easy to make plots with confidence intervals for each coefficient.
 #'
 #' @param rqs A `rq` or `rqs` object from `{quantreg}`.
-#' @inheritDotParams quantreg::summary.rq
+#' @param ... Arguments passed on to [quantreg::summary.rq()]
 #'
 #' @import quantreg
 #' @importFrom dplyr mutate bind_rows
@@ -17,6 +17,7 @@
 #'
 #' @returns A `tibble`
 #'
+#' @seealso [quantreg::rq()]
 
 coef_rqs <- function(rqs, ...) {
   summary <- summary(rqs, ...)
@@ -26,9 +27,8 @@ coef_rqs <- function(rqs, ...) {
       \(x)
       x$coefficients %>%
         t() %>%
-        as_tibble() %>%
+        as_tibble(rownames = "value") %>%
         mutate(
-          value = c("coef", "lower_bound", "upper_bound"),
           quant = x$tau
         )
     ) %>%

@@ -35,10 +35,14 @@ https://basedosdados.org/dataset/3e7c4d58-96ba-448e-b053-d385a829ef00?table=c3a5
 }
 \examples{
 \dontrun{
+# Getting RAIS data for Caete (MG)
+
+## setting variables
 variables <- "ano, quantidade_vinculos_ativos, cnae_2, indicador_atividade_ano"
 source <- "`basedosdados.br_me_rais.microdados_estabelecimentos`"
 city <- "id_municipio='3110004'"
 
+## download
 get_rais(
   variables = variables,
   source = source,

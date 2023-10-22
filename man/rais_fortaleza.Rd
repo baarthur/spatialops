@@ -7,14 +7,14 @@
 \format{
 \subsection{\code{fortaleza_rais}}{
 
-A tibble with 28,453 rows and 3 columns:
+A \code{data.frame} with 65 rows and 6 columns:
 \describe{
-\item{ano}{Year (double)}
-\item{quantidade_vinculos_ativos}{Number of employees per firm (double)}
-\item{cep}{Firm postcode (double)}
-\item{cod_bairro_rais}{Neighborhood code in the RAIS dataset (character)}
-\item{nome_bairro}{Neighborhood name, withouth capital letters os special characters}
-\item{cod_bairro}{Neighborhood code according to city counsil data (character)}
+\item{year}{Year (double)}
+\item{name_neigh}{Neighborhood name, withouth capital letters os special characters}
+\item{code_neigh}{Neighborhood code according to city counsil data (character)}
+\item{n_jobd}{Number of employees in the neighborhood (integer)}
+\item{avg_wage}{Average wage in the neighborhood (double)}
+\item{avg_wage_h}{Average hourly wage in the neighborhood (diouble)}
 }
 }
 }
@@ -25,7 +25,10 @@ A tibble with 28,453 rows and 3 columns:
 rais_fortaleza
 }
 \description{
-A subset of the Brazilian employer-employee dataset (RAIS) for Fortaleza in 2019. Data obtained
-via package \code{{basedosdados}}.
+A subset of the Brazilian employer-employee dataset (RAIS) for Fortaleza in 2019, grouped by
+neighborhood. Data obtained via package \code{{basedosdados}}.
+}
+\seealso{
+\code{\link[basedosdados:download]{basedosdados::download()}}, \code{\link[basedosdados:read_sql]{basedosdados::read_sql()}}
 }
 \keyword{datasets}

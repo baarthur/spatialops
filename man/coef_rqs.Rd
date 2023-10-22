@@ -9,79 +9,7 @@ coef_rqs(rqs, ...)
 \arguments{
 \item{rqs}{A \code{rq} or \code{rqs} object from \code{{quantreg}}.}
 
-\item{...}{
-  Arguments passed on to \code{\link[quantreg:summary.rq]{quantreg::summary.rq}}
-  \describe{
-    \item{\code{object}}{
-    This is an object of class \code{"rq"} or \code{"rqs"} produced by 
-    a call to \code{rq()}, depending on whether one or more taus are
-    specified.
-  }
-    \item{\code{se}}{
-    specifies the method used to compute standard standard errors.  There
-    are currently seven available methods:  
-    \enumerate{
-      \item \code{"rank"} which produces confidence intervals for the
-      estimated parameters by inverting a rank test as described in
-      Koenker (1994).  This method involves solving a parametric linear
-      programming problem, and for large sample sizes can be extremely
-      slow, so by default it is only used when the sample size is less
-      than 1000, see below.  The default option assumes that the errors are
-      iid, while the option iid = FALSE implements a proposal of Koenker
-      Machado (1999).  See the documentation for \code{rq.fit.br} for additional arguments.
-      \item \code{"iid"} which presumes that the errors are iid and computes
-      an estimate of the asymptotic covariance matrix as in KB(1978).
-      
-      \item \code{"nid"} which presumes local (in \code{tau})
-      linearity (in \code{x}) of the
-      the conditional quantile functions and computes a Huber
-      sandwich estimate using a local estimate of the sparsity.
-      If the initial fitting was done with method "sfn" then use
-      of \code{se = "nid"} is recommended.  However, if the cluster
-      option is also desired then \code{se = "boot"} can be used
-      and bootstrapping will also employ the "sfn" method.
-      
-      \item \code{"ker"} which uses a kernel estimate of the sandwich
-      as proposed by Powell(1991).
-
-      \item \code{"boot"} which implements one of several possible bootstrapping
-      alternatives for estimating standard errors including a variate of the wild
-      bootstrap for clustered response.  See \code{\link[quantreg]{boot.rq}} for
-      further details.  
-
-      \item \code{"BLB"} which implements the bag of little bootstraps method
-      proposed in Kleiner, et al (2014).  The sample size of the little bootstraps
-      is controlled by the parameter \code{gamma}, see below.  At present only
-      \code{bsmethod = "xy"} is sanction, and even that is experimental.  This
-      option is intended for applications with very large n where other flavors
-      of the bootstrap can be slow.
-
-      \item \code{"conquer"} which is invoked automatically if the fitted 
-      object was created with \code{method = "conquer"}, and returns the
-      multiplier bootstrap percentile confidence intervals described in
-      He et al (2020).
-
-      \item \code{"extreme"} which uses the subsampling method of Chernozhukov
-      Fernandez-Val, and Kaji (2018) designed for inference on extreme quantiles.
-    }
-    If \code{se = NULL} (the default)  and \code{covariance = FALSE}, and
-    the sample size is less than 1001, then the "rank" method is used, 
-    otherwise the "nid" method is used.
-  }
-    \item{\code{covariance}}{
-    logical flag to indicate whether the full covariance matrix of the 
-    estimated parameters should be returned. 
-  }
-    \item{\code{hs}}{
-    Use Hall Sheather bandwidth for sparsity estimation
-    If false revert to Bofinger bandwidth.
-   }
-    \item{\code{U}}{Resampling indices or gradient evaluations used for bootstrap,
-       see \code{\link[quantreg]{boot.rq}}.}
-    \item{\code{gamma}}{parameter controlling the effective sample size of the'bag
-       of little bootstrap samples that will be \code{b = n^gamma} where
-       \code{n} is the sample size of the original model.}
-  }}
+\item{...}{Arguments passed on to \code{\link[quantreg:summary.rq]{quantreg::summary.rq()}}}
 }
 \value{
 A \code{tibble}
@@ -90,4 +18,7 @@ A \code{tibble}
 A wrapper for \code{summary.rq()}. Display a quantile reregression's call in a tidy format,
 one column for each variable and the coefficient, confidence intervals, and tau in the rows.
 This makes it easy to make plots with confidence intervals for each coefficient.
+}
+\seealso{
+\code{\link[quantreg:rq]{quantreg::rq()}}
 }

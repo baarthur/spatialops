@@ -4,27 +4,31 @@
 \alias{dist_nearest}
 \title{Distance to the nearest feature}
 \usage{
-dist_nearest(x, y, name, id_feature = F, geometry = geometry)
+dist_nearest(x, y, name, id_feature = F, geometry = geometry, drop_units = T)
 }
 \arguments{
 \item{x}{A \code{sf} object to calculate distances from.}
 
 \item{y}{A \code{sf} object to retrieve the closest one to each observation in \code{x}}
 
-\item{name}{description An optional argument to set the new column's name, otherwise it is set to "distance".}
+\item{name}{An optional argument to set the new column's name, otherwise it is set to "distance".}
 
-\item{id_feature}{Specifies if an additional column with \code{y}'s row id should be inserted. Defaults to FALSE.}
+\item{id_feature}{Specifies if an additional column with \code{y}'s row id should be inserted. Defaults to \code{FALSE.}}
 
 \item{geometry}{Specifies the name of the geometry column, if different from the default, to reorder variables.}
+
+\item{drop_units}{Should units be included? Default: \code{FALSE}}
 }
 \value{
 Original \code{x} with an additional column containing the distance to the closest  \code{y} feature.
 }
 \description{
-Distance to the nearest feature
+For each spatial object in x, calculate the distance to the nearest feature in y.
 }
 \details{
-For each spatial object in x, calculate the distance to the nearest feature in y.
+\code{dist_nearest} First finds the closest feature in \code{y} to each feature in \code{x}, calculating then
+pairwise distances faster than e.g. using a for loop and then minimizing distances or
+calculating distance matrices.
 }
 \examples{
 data("fortaleza")
