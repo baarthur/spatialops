@@ -71,6 +71,47 @@ requires an already spatialized dataset
 }
 \examples{
 \dontrun{
-print("Hello world!")
+# 1 one year
+
+data("fortaleza")
+data("rais_fortaleza")
+
+## get geometry data into dataframe
+rais_fortaleza <- rais_fortaleza \%>\%
+  left_join(fortaleza) \%>\%
+  sf::st_as_sf() \%>\%
+  filter(year == 2019)
+
+## 1.1 inheriting data from ggplot()
+rais_fortaleza \%>\%
+  ggplot() +
+  geom_sf_rais(n_jobs, var_name = "Jobs", geo_name = "Fortaleza", geo_level = "neighborhood") +
+  theme_void()
+
+## 1.2 passing data explicitly
+ggplot() +
+  geom_sf_rais(n_jobs, var_name = "Jobs", geo_name = "Fortaleza", geo_level = "neighborhood",
+               data = rais_fortaleza) +
+  theme_void()
+}
+
+\dontrun{
+# 2 two years (faceted)
+
+data("fortaleza")
+data("rais_fortaleza")
+
+## get geometry data into dataframe
+rais_fortaleza <- rais_fortaleza \%>\%
+  left_join(fortaleza) \%>\%
+  sf::st_as_sf()
+
+## plot
+ggplot() +
+  geom_sf(data = fortaleza, color = NA) +
+  geom_sf_rais(n_jobs, var_name = "Jobs", geo_name = "Fortaleza", geo_level = "neighborhood",
+               data = rais_fortaleza,
+               faceted = T, facet_var = year) +
+  theme_void()
 }
 }
