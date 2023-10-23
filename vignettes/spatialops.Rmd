@@ -62,7 +62,7 @@ Now, we'll use our `get_osm_rail()` wrapper to get all rail things from OSM alre
 shp_bairr %>% 
   st_bbox() %>% 
   get_osm_rail(use = "points") %>% 
-  saveRDS("data/shp_metro.RDS")
+  saveRDS("data/shp_metro.RDS", version = 2)
 ```
 
 ```{r metrofor-scaffoldings2, include=FALSE}
