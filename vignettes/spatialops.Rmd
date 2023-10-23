@@ -38,28 +38,18 @@ library(spatialops)
 
 From the official [Fortaleza Maps Portal](https://mapas.fortaleza.ce.gov.br/), I downloaded the neighborhoods and parks files. Since they are in the `Esri Shapefile` format, they come in `.zip` folders containing multiple files (`.dbf`, `.prj`, `.shp`, `.shx`), all of them necessary. To avoid creating a mess, we can use `shp_extract_read()`: Just specify the path and you're done! You can also give a `dsn` (data source name) extension. By default, `dsn = shp` but you can also use `dsn = ` `geojson`, `kml` and so on. Other `st_read()` arguments can also be passed. Here, we define the `options` argument to ensure the `latin1` encoding, otherwise this file won't work. 
 
-```{r shp-read1}
+```{r shp-read}
 # load
 shp_bairr <- shp_extract_read(path = "data/Bairros_de_Fortaleza.zip", options = "ENCODING=latin1")
-```
-
-```{r shp-read2}
-# load
 shp_parks <- shp_extract_read(path = "data/Pracas_de_Fortaleza.zip", options = "ENCODING=latin1")
-```
 
-```{r shp-read3}
 # and a bit of tidying
 shp_bairr <- shp_bairr %>% 
   select(id, name = Nome, area_ha = Área..ha., geometry)
-```
 
-```{r shp-read4}
-# and a bit of tidying
 shp_parks <- shp_parks %>% 
   select(id, name = nome, area_m2 = area.m2, geometry)
 ```
-
 
 
 ## Get OSM data
