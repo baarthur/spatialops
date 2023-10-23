@@ -2,21 +2,35 @@
 % Please edit documentation in R/get_osm.R
 \name{get_osm_roads}
 \alias{get_osm_roads}
-\alias{get_osm_zips}
+\alias{get_osm_postcodes}
 \alias{get_osm_rail}
 \title{Download osm data}
 \usage{
-get_osm_roads(bbox)
+get_osm_roads(
+  bbox,
+  use = c("all", "points", "lines", "multilines", "multipolygons")
+)
 
-get_osm_zips(bbox)
+get_osm_postcodes(
+  bbox,
+  use = c("all", "points", "lines", "multilines", "multipolygons")
+)
 
-get_osm_rail(bbox)
+get_osm_rail(
+  bbox,
+  use = c("all", "points", "lines", "multilines", "multipolygons")
+)
 }
 \arguments{
 \item{bbox}{A bounding box for the search area.}
+
+\item{use}{Should all geometries be kept? Defaults to all, but can also be one of
+"points", "lines", "multilines", "multipolygons". Use this when sure about what geometry you
+want to retrieve (e.g. when getting postcodes, you most surely want \code{use = "points"}).}
 }
 \value{
-A \code{list} for each kind of geometry retrieved by osmdata.
+If \code{use = ("all")}, a \code{list} for each kind of geometry retrieved by \code{{osmdata}}. Else, a
+\verb{simple feature} dataframe for the selected geometry type instead of a list with all geometries.
 }
 \description{
 A convenient wrapper for osm features to get some features I need easily convertible to \code{sf} format.
@@ -44,7 +58,7 @@ get_osm_roads()
 # Get postcodes in Brazil's smallest city
 geobr::read_municipality(code_muni = 3157336) \%>\%
 sf::st_bbox() \%>\%
-get_osm_zips()
+get_osm_postcodes()
 }
 \dontrun{
 # Get railways in Brazil's smallest city

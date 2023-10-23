@@ -4,7 +4,7 @@
 \alias{shp_extract_read}
 \title{Extract and read compacted shapefiles}
 \usage{
-shp_extract_read(path, dsn, ...)
+shp_extract_read(path, dsn = "shp", ...)
 }
 \arguments{
 \item{path}{Path of the compacted folder, including file name and extension.}

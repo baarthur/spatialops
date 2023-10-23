@@ -12,11 +12,11 @@
 #'
 #' @returns A `sf` object
 
-shp_extract_read <- function(path, dsn, ...) {
+shp_extract_read <- function(path, dsn = "shp", ...) {
 
   temp <- tempfile()
   unzip(path, exdir = temp, junkpaths = TRUE)
-  listfiles <- list.files(temp, pattern = dsn, full.names = TRUE)
+  listfiles <- list.files(temp, pattern = paste0("\\.", dsn, "$"), full.names = TRUE)
 
   shp <- sf::st_read(dsn = listfiles, ...)
 

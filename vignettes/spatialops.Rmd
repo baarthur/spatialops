@@ -1,0 +1,170 @@
+---
+title: "An introduction to spatialops"
+output:   
+  rmarkdown::html_vignette:
+    df_print: kable
+vignette: >
+  %\VignetteIndexEntry{An introduction to spatialops}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+In this vignette, I demonstrate how to use the main features of the `{spatialops}` package. Basing on the sunny city of Fortaleza, we will first read a manually downloaded shapefiles from .zip folders. Then, we will use our `{osmdata}` wrappers to get info on rail stations and perform two kind of spatial operations: count metro stations per neighborhood and the distance from each park to the closest station. 
+
+**Setup**
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  #out.width = "400px",
+  #out.height = "300px",
+  #fig.retina = 2
+  out.width = "100%"
+)
+```
+
+```{r setup, message=FALSE}
+library(sf)
+library(dplyr)
+library(ggplot2)
+library(spatialops)
+```
+
+
+
+## Read shapefiles from a .zip folder
+
+> Tip: I highly recommend that you save your data in an organized way, such as [this         structure](https://martinctc.github.io/blog/rstudio-projects-and-working-directories-a-beginner's-guide/).
+
+From the official [Fortaleza Maps Portal](https://mapas.fortaleza.ce.gov.br/), I downloaded the neighborhoods and parks files. Since they are in the `Esri Shapefile` format, they come in `.zip` folders containing multiple files (`.dbf`, `.prj`, `.shp`, `.shx`), all of them necessary. To avoid creating a mess, we can use `shp_extract_read()`: Just specify the path and you're done! You can also give a `dsn` (data source name) extension. By default, `dsn = shp` but you can also use `dsn = ` `geojson`, `kml` and so on. Other `st_read()` arguments can also be passed. Here, we define the `options` argument to ensure the `latin1` encoding, otherwise this file won't work. 
+
+```{r shp-read}
+# load
+shp_bairr <- shp_extract_read(path = "data/Bairros_de_Fortaleza.zip", options = "ENCODING=latin1")
+shp_parks <- shp_extract_read(path = "data/Pracas_de_Fortaleza.zip", options = "ENCODING=latin1")
+
+# and a bit of tidying
+shp_bairr <- shp_bairr %>% 
+  select(id, name = Nome, area_ha = Área..ha., geometry)
+
+shp_parks <- shp_parks %>% 
+  select(id, name = nome, area_m2 = area.m2, geometry)
+```
+
+
+## Get OSM data
+
+### Rail stations
+
+Now, we'll use our `get_osm_rail()` wrapper to get all rail things from OSM already into a `simple feature`, by keeping only points since we don't want polygons or lines.
+
+```{r metrofor-scaffoldings1, eval=FALSE, include=FALSE}
+shp_bairr %>% 
+  st_bbox() %>% 
+  get_osm_rail(use = "points") %>% 
+  saveRDS("data/shp_metro.RDS")
+```
+
+```{r metrofor-scaffoldings2, include=FALSE}
+shp_metro <- readRDS("data/shp_metro.RDS")
+```
+
+```{r get-metrofor, eval=FALSE}
+shp_metro <- shp_bairr %>% 
+  st_bbox() %>% 
+  get_osm_rail(use = "points")
+
+head(shp_metro)
+```
+
+Most of this data is useless for us, so let's begin by `filter`ing only stations---this will reduce the number of rows from 2609 to 36---and then `select`ing relevant columns.
+```{r}
+shp_metro <- shp_metro %>% 
+  filter(public_transport == "station") %>%
+  select(osm_id, name, railway, start_date, station)
+```
+
+All set! Let's visualize:
+```{r shp-plot}
+ggplot() +
+  geom_sf(
+    data = shp_bairr, fill = "#f9f9f9"
+  ) + 
+  geom_sf(
+    data = shp_parks, aes(fill = "Park"), color = "#86d7bc"
+  ) +
+  geom_sf(
+    data = shp_metro, aes(color = "Metrofor station"), size = 0.5
+  ) +
+  scale_fill_manual(values = c("Park" = "#86d7bc")) +
+  scale_color_manual(values = c("Metrofor station" = "red")) +
+  labs(title = "Fortaleza: Parks and Metro") +
+  theme_void() +
+  theme(
+    legend.title = element_blank(),
+    legend.key.size = unit(0.5, "lines")
+  ) +
+  guides(color = guide_legend(override.aes = list(size = 1)))
+```
+
+
+
+
+## Count parks per neighborhood
+
+Parks and plazas are an important indicator of urban development, as they both attract households and companies, but are sometimes concentrated in historically affluent areas: In both cases, understanding how amenities are distributed along the space is key in most urban studies. Here, we demonstrate how `{spatialops}` makes it easy to count how many parks each neighborhood has.
+
+All we need to do is call `count_features(x,y)` and it will bind to `x` a column with the number of `y` features for each row. If `x` is a list of `POINT`s, we need to provide a `radius` to create a buffer and then count features inside it. There are two optional arguments: `name` is pretty obvious (the count variable name), whereas `predicate` lets you decide which spatial operation to perform. By default, `predicate = st_intersects` means that `count_features()` will count how many `y`s intersect with each `x`, but you can use `st_covers`, `st_contains_properly`, and so on.
+```{r, warning=FALSE}
+shp_bairr <- shp_bairr %>% 
+  count_features(shp_parks, name = "n_parks")
+
+shp_bairr %>% 
+  arrange(desc(n_parks)) %>% 
+  slice(1:10) %>% 
+  ggplot() +
+  geom_col(aes(y = reorder(name, n_parks), x = n_parks)) +
+  scale_y_discrete(labels = scales::label_wrap(10)) +
+  labs(title = "Parks and Rec: Fortaleza Edition", y = "Neighborhood", x = "Number of parks") +
+  theme_minimal()
+
+shp_bairr %>% 
+  ggplot() +
+  geom_sf(aes(fill = n_parks, color = n_parks)) +
+  geom_sf_label(
+    data = shp_bairr %>% arrange(desc(n_parks)) %>% slice(1:10),
+    aes(label = name),
+    size = 1.5, color = "black", label.padding = unit(0.1, "lines"), nudge_x = 0.01, nudge_y = 0.001
+  ) +
+  scale_fill_distiller(palette = "YlGnBu", direction = 1) +
+  scale_color_distiller(palette = "YlGnBu", direction = 1) +
+  labs(title = "Parks and Rec: Fortaleza Edition", fill = "Number of parks", color = "Number of parks") +
+  theme_void()
+```
+
+
+
+## Calculate distance from each park to the nearest station
+
+```{r}
+shp_parks <- shp_parks %>% 
+  dist_nearest(shp_metro, name = "dist_metro")
+
+shp_parks %>% 
+  ggplot() +
+  geom_histogram(aes(x = dist_metro/1000)) +
+  labs(title = "How close are parks to Metrofor stations?", x = "Distance (km)", y = "Number of parks") +
+  theme_minimal()
+```
+
+
+
+## Trinary sets
+
+[under construction]
+
+
+
+## Conclusion
+
+[under construction]

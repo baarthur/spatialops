@@ -4,10 +4,14 @@
 #' A convenient wrapper for osm features to get some features I need easily convertible to `sf` format.
 #'
 #' @param bbox A bounding box for the search area.
+#' @param use Should all geometries be kept? Defaults to all, but can also be one of
+#'  "points", "lines", "multilines", "multipolygons". Use this when sure about what geometry you
+#'  want to retrieve (e.g. when getting postcodes, you most surely want `use = "points"`).
 #'
 #' @import osmdata
 #'
-#' @returns A `list` for each kind of geometry retrieved by osmdata.
+#' @returns If `use = ("all")`, a `list` for each kind of geometry retrieved by `{osmdata}`. Else, a
+#'  `simple feature` dataframe for the selected geometry type instead of a list with all geometries.
 #'
 #' @seealso [osmdata::add_osm_feature()]
 
@@ -30,20 +34,24 @@
 #' get_osm_roads()
 #' }
 
-get_osm_roads <- function(bbox) {
+get_osm_roads <- function(bbox, use = c("all", "points", "lines", "multilines", "multipolygons")) {
   query <- opq(bbox, timeout = 50) %>%
     add_osm_feature(
       key = "highway",
       value = c("motorway", "primary", "secondary", "tertiary", "residential", "living_street", "pedestrian")
     ) %>%
     osmdata_sf()
+
+  if(use != "all") {
+    query <- query[[paste0("osm_",use)]]
+  }
+
   return(query)
 }
 
 
-
 #' @rdname get_osm_
-#' @name get_osm_zips
+#' @name get_osm_postcodes
 #' @export
 #'
 #' @details
@@ -55,16 +63,20 @@ get_osm_roads <- function(bbox) {
 #' # Get postcodes in Brazil's smallest city
 #' geobr::read_municipality(code_muni = 3157336) %>%
 #' sf::st_bbox() %>%
-#' get_osm_zips()
+#' get_osm_postcodes()
 #' }
 
 
-get_osm_zips <- function(bbox) {
+get_osm_postcodes <- function(bbox, use = c("all", "points", "lines", "multilines", "multipolygons")) {
   query <- opq(bbox, timeout = 50) %>%
     add_osm_feature(
       key = "addr:postcode"
     ) %>%
     osmdata_sf()
+
+  if(use != "all") {
+    query <- query[[paste0("osm_",use)]]
+  }
 
   return(query)
 }
@@ -89,7 +101,7 @@ get_osm_zips <- function(bbox) {
 #' }
 
 
-get_osm_rail <- function(bbox) {
+get_osm_rail <- function(bbox, use = c("all", "points", "lines", "multilines", "multipolygons")) {
   query <- opq(bbox, timeout = 50) %>%
     add_osm_feature(
       key = "railway",
@@ -97,6 +109,10 @@ get_osm_rail <- function(bbox) {
                 "station", "tram_stop")
     ) %>%
     osmdata_sf()
+
+  if(use != "all") {
+    query <- query[[paste0("osm_",use)]]
+  }
 
   return(query)
 }
