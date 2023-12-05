@@ -1,15 +1,21 @@
 #' Widen description from MapHub
+#'
 #' @description
 #' Convert maphub geojson-like description info to tibble columns.
+#'
 #' @param data A `sf` object imported from MapHub and read into R using `sf::st_read`.
 #' @param values <data-masking> Column containing data to be converted into multiple variables.
 #' Defaults to `description`.
 #' @param key_sep Character string that separates a key from its value.
 #' @param pair_sep Character string that separates key-value pairs.
+#'
 #' @import tidyr
 #' @importFrom sf st_as_sf
+#'
 #' @export
+#'
 #' @returns A `sf` object.
+#'
 #' @details
 #' Returns a spatial dataset with separate columns for each key-value pair in the original description
 #' column
@@ -36,6 +42,7 @@ maphub_to_sf <- function(data, values = description, key_sep = ": ", pair_sep = 
 
 
 #' Tidy transit lines from Maphub.
+#'
 #' @param data A `sf` object imported from MapHub and already converted using maphub_to_sf
 #' @import dplyr
 #' @import sf
