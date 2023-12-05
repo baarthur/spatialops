@@ -1,3 +1,5 @@
+library(dplyr)
+
 data("fortaleza")
 
 # grid for only one polygon
@@ -5,19 +7,17 @@ data("fortaleza")
 ## cutting grid edges (default)
 fortaleza %>%
   filter(name_neigh == "centro") %>%
-  get_h3_grid() %>%
-  ggplot() +
-  geom_sf()
+  get_h3_grid()
 
 ## letting grid cross borders
 fortaleza %>%
   filter(name_neigh == "centro") %>%
-  get_h3_grid(crop = FALSE) %>%
-  ggplot() +
-  geom_sf()
+  get_h3_grid(crop = FALSE)
 
 
 # grid for multiple polygons using purrr::map()
+
+library(purrr)
 
 ## cutting edges
 fortaleza %>%
@@ -28,7 +28,4 @@ fortaleza %>%
       filter(name_neigh == x) %>%
       get_h3_grid()
   ) %>%
-  bind_rows() %>%
-  ggplot() +
-  geom_sf(aes(fill = name_region), alpha = 0.25, linewidth = 0.125) +
-  theme_void()
+  bind_rows()

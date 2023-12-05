@@ -16,6 +16,9 @@ A \code{ggplot} object
 This function creates a bounding box from a \code{sf} object and apply its limits to \code{coord_sf}.
 }
 \examples{
+library(ggplot2)
+library(dplyr)
+
 data("fortaleza")
 
 # plot the whole city, fill neighborhood "aldeota" in red, and zoom in to region "SER II"

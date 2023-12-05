@@ -27,6 +27,8 @@ A wrapper around \code{ggplot2::geom_sf}, this function generates fixed scale ma
 comparison between different plots.
 }
 \examples{
+library(ggplot2)
+
 data("fortaleza")
 
 # entire data
@@ -38,6 +40,9 @@ ggplot() +
   geom_sf_toscale(fortaleza, 3000, name_neigh, c("centro", "aldeota"))
 
 # filtering a few neighborhoods, one per plot
+library(dplyr)
+library(purrr)
+
 p <- fortaleza[1:2,] \%>\%
   pull(name_neigh) \%>\%
   map(
@@ -47,6 +52,6 @@ p <- fortaleza[1:2,] \%>\%
       labs(title = x)
   )
 
-## plotting them together
-cowplot::plot_grid(p[[1]], p[[2]])
+## plotting them together (requires cowplot)
+# cowplot::plot_grid(p[[1]], p[[2]])
 }

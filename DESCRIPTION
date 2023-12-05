@@ -15,6 +15,7 @@ Imports:
     colorspace,
     dplyr,
     ggplot2,
+    h3jsr,
     magrittr,
     osmdata,
     purrr,
