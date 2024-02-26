@@ -49,6 +49,7 @@ po/*~
 rsconnect/
 
 # macos things
+.DS_Store
 */.DS_Store
 
 # data sources
@@ -56,3 +57,6 @@ data-raw/*
 inst/doc
 /doc/
 /Meta/
+
+# old files
+*/old

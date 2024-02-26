@@ -4,27 +4,29 @@
 \alias{trinary_sets}
 \title{Trinary sets}
 \usage{
-trinary_sets(df, cat1, cat2, keep.overlap = F)
+trinary_sets(df, cat1, cat2, cat1_order = NULL)
 }
 \arguments{
 \item{df}{A \code{sf} object.}
 
-\item{cat1}{\if{html}{\out{<data-masking>}} Column containing the object classes. Cannot contain more than three
-distinct classes.}
+\item{cat1}{\if{html}{\out{<data-masking>}} Column containing the set classes. If more than three classes are
+present, any class different from those provided on \code{cat1_order} (or the first three if
+\code{cat1_order} is \code{NULL}) are ignored.}
 
 \item{cat2}{\if{html}{\out{<data-masking>}} Second category to guide sets classification.}
 
-\item{keep.overlap}{Should overlapping sets (i.e. entire sets and unions) be included? Defaults
-to \code{FALSE}.}
+\item{cat1_order}{A vector with size 3 with cat1 class names in order of importance: the first
+one dominates the second if they overlap and so on. If \code{NULL}, the order in which they appear in data
+will be taken (or the \code{levels} order, if \code{cat1} is a \code{factor}).}
 }
 \value{
 A \code{sf} object
 }
 \description{
-Perform spatial operations in sets of three classes and an additional category.
+Divide space in three transitive sets and one additional category.
 }
 \details{
-Returned data contains one geometry for each class (A', B', C', AB, AC, BC, ABC, and overlaps
-when required) per additional category. Categories are renamed according to the order displayed
-in the message after the code runs successfully.
+Current implementation uses \code{dplyr::group_by}, which groups data in ascending order (numerical or
+alphabetical). If \code{cat2} is \code{numeric}, smaller numbers dominate larger ones when
+they overlap; similarly, if \code{cat2} is \code{character} or \code{factor}, the hierarchy will be alphabetical.
 }
