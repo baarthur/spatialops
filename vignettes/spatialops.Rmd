@@ -1,6 +1,6 @@
 ---
 title: "An introduction to spatialops"
-output:   
+output:
   rmarkdown::html_vignette:
     df_print: kable
 vignette: >
@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-In this vignette, I demonstrate how to use the main features of the `{spatialops}` package. Basing on the sunny city of Fortaleza, we will first read a manually downloaded shapefiles from .zip folders. Then, we will use our `{osmdata}` wrappers to get info on rail stations and perform two kind of spatial operations: count metro stations per neighborhood and the distance from each park to the closest station. 
+In this vignette, I demonstrate how to use the main features of the `{spatialops}` package. Basing on the sunny city of Fortaleza, we will first read a manually downloaded shapefiles from .zip folders. Then, we will use the included `metrofor` dataset and perform two kinds of spatial operations: count metro stations per neighborhood and the distance from each park to the closest station.
 
 **Setup**
 ```{r, include=FALSE}
@@ -36,7 +36,7 @@ library(spatialops)
 
 > Tip: I highly recommend that you save your data in an organized way, such as [this         structure](https://martinctc.github.io/blog/rstudio-projects-and-working-directories-a-beginner's-guide/).
 
-From the official [Fortaleza Maps Portal](https://mapas.fortaleza.ce.gov.br/), I downloaded the neighborhoods and parks files. Since they are in the `Esri Shapefile` format, they come in `.zip` folders containing multiple files (`.dbf`, `.prj`, `.shp`, `.shx`), all of them necessary. To avoid creating a mess, we can use `shp_extract_read()`: Just specify the path and you're done! You can also give a `dsn` (data source name) extension. By default, `dsn = shp` but you can also use `dsn = ` `geojson`, `kml` and so on. Other `st_read()` arguments can also be passed. Here, we define the `options` argument to ensure the `latin1` encoding, otherwise this file won't work. 
+From the official [Fortaleza Maps Portal](https://mapas.fortaleza.ce.gov.br/), I downloaded the neighborhoods and parks files. Since they are in the `Esri Shapefile` format, they come in `.zip` folders containing multiple files (`.dbf`, `.prj`, `.shp`, `.shx`), all of them necessary. To avoid creating a mess, we can use `shp_extract_read()`: Just specify the path and you're done! You can also give a `dsn` (data source name) extension. By default, `dsn = shp` but you can also use `dsn = ` `geojson`, `kml` and so on. Other `st_read()` arguments can also be passed. Here, we define the `options` argument to ensure the `latin1` encoding, otherwise this file won't work.
 
 ```{r shp-read}
 # load
@@ -44,52 +44,29 @@ shp_bairr <- shp_extract_read(path = "data/Bairros_de_Fortaleza.zip", options = 
 shp_parks <- shp_extract_read(path = "data/Pracas_de_Fortaleza.zip", options = "ENCODING=latin1")
 
 # and a bit of tidying
-shp_bairr <- shp_bairr %>% 
+shp_bairr <- shp_bairr %>%
   select(id, name = Nome, area_ha = Área..ha., geometry)
 
-shp_parks <- shp_parks %>% 
+shp_parks <- shp_parks %>%
   select(id, name = nome, area_m2 = area.m2, geometry)
 ```
 
 
-## Get OSM data
+## Metrofor stations
 
-### Rail stations
+The package includes the `metrofor` dataset. We keep its station points for the maps and distance examples below.
 
-Now, we'll use our `get_osm_rail()` wrapper to get all rail things from OSM already into a `simple feature`, by keeping only points since we don't want polygons or lines.
-
-```{r metrofor-scaffoldings1, eval=FALSE, include=FALSE}
-shp_bairr %>% 
-  st_bbox() %>% 
-  get_osm_rail(use = "points") %>% 
-  saveRDS("data/shp_metro.RDS", version = 2)
-```
-
-```{r metrofor-scaffoldings2, include=FALSE}
-shp_metro <- readRDS("data/shp_metro.RDS")
-```
-
-```{r get-metrofor, eval=FALSE}
-shp_metro <- shp_bairr %>% 
-  st_bbox() %>% 
-  get_osm_rail(use = "points")
-
+```{r get-metrofor}
+data("metrofor", package = "spatialops")
+shp_metro <- dplyr::filter(metrofor, railway == "station")
 head(shp_metro)
 ```
-
-Most of this data is useless for us, so let's begin by `filter`ing only stations---this will reduce the number of rows from 2609 to 36---and then `select`ing relevant columns.
-```{r}
-shp_metro <- shp_metro %>% 
-  filter(public_transport == "station") %>%
-  select(osm_id, name, railway, start_date, station)
-```
-
 All set! Let's visualize:
 ```{r shp-plot}
 ggplot() +
   geom_sf(
     data = shp_bairr, fill = "#f9f9f9"
-  ) + 
+  ) +
   geom_sf(
     data = shp_parks, aes(fill = "Park"), color = "#86d7bc"
   ) +
@@ -116,19 +93,19 @@ Parks and plazas are an important indicator of urban development, as they both a
 
 All we need to do is call `count_features(x,y)` and it will bind to `x` a column with the number of `y` features for each row. If `x` is a list of `POINT`s, we need to provide a `radius` to create a buffer and then count features inside it. There are two optional arguments: `name` is pretty obvious (the count variable name), whereas `predicate` lets you decide which spatial operation to perform. By default, `predicate = st_intersects` means that `count_features()` will count how many `y`s intersect with each `x`, but you can use `st_covers`, `st_contains_properly`, and so on.
 ```{r, warning=FALSE}
-shp_bairr <- shp_bairr %>% 
+shp_bairr <- shp_bairr %>%
   count_features(shp_parks, name = "n_parks")
 
-shp_bairr %>% 
-  arrange(desc(n_parks)) %>% 
-  slice(1:10) %>% 
+shp_bairr %>%
+  arrange(desc(n_parks)) %>%
+  slice(1:10) %>%
   ggplot() +
   geom_col(aes(y = reorder(name, n_parks), x = n_parks)) +
   scale_y_discrete(labels = scales::label_wrap(10)) +
   labs(title = "Parks and Rec: Fortaleza Edition", y = "Neighborhood", x = "Number of parks") +
   theme_minimal()
 
-shp_bairr %>% 
+shp_bairr %>%
   ggplot() +
   geom_sf(aes(fill = n_parks, color = n_parks)) +
   geom_sf_label(
@@ -147,10 +124,10 @@ shp_bairr %>%
 ## Calculate distance from each park to the nearest station
 
 ```{r}
-shp_parks <- shp_parks %>% 
+shp_parks <- shp_parks %>%
   dist_nearest(shp_metro, name = "dist_metro")
 
-shp_parks %>% 
+shp_parks %>%
   ggplot() +
   geom_histogram(aes(x = dist_metro/1000)) +
   labs(title = "How close are parks to Metrofor stations?", x = "Distance (km)", y = "Number of parks") +
