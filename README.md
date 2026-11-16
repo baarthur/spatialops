@@ -13,7 +13,6 @@ Built mainly upon the `{sf}` and `{tidyverse}` frameworks, the functions in this
 * read shapefiles directly from a `.zip` whithout creating a mess in your folders with `shp_extract_read`
 * calculate the distance between the closest `y` feature from an `x` set of features with `dist_nearest`
 * need to manually tidy your shapefiles (e.g. nudge a geometry)? No problem, load them into [MapHub](https://maphub.net/) and then convert the description into useful columns using `maphub_to_sf`
-* `gg`plot quantile regression coefficients with `coef_rqs`
 
 
 ## Installation

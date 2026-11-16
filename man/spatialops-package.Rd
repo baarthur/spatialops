@@ -11,5 +11,10 @@ Mainly spatial operations, like calculating distances or classifying catchment a
 \author{
 \strong{Maintainer}: Arthur Bazolli \email{baarthur0@outlook.com}
 
+Authors:
+\itemize{
+  \item Arthur Bazolli \email{baarthur0@outlook.com}
+}
+
 }
 \keyword{internal}

@@ -26,6 +26,41 @@ are no layers in \code{dsn}. If \code{dsn} is a database connection, then
 \code{layer} can be a table name or a database identifier (see
 \code{\link[DBI]{Id}}). It is also possible to omit \code{layer} and rather
 use the \code{query} argument.}
+    \item{\code{query}}{SQL query to select records; see details}
+    \item{\code{options}}{character; driver dependent dataset open options, multiple
+options supported. For possible values, see the "Open options" section
+of the GDAL documentation of the corresponding driver, and
+\url{https://github.com/r-spatial/sf/issues/1157} for an example.}
+    \item{\code{quiet}}{logical; suppress info on name, driver, size and spatial
+reference, or signaling no or multiple layers}
+    \item{\code{geometry_column}}{integer or character; in case of multiple geometry
+fields, which one to take?}
+    \item{\code{type}}{integer; ISO number of desired simple feature type; see details.
+If left zero, and \code{promote_to_multi} is \code{TRUE}, in case of mixed
+feature geometry types, conversion to the highest numeric type value found
+will be attempted. A vector with different values for each geometry column
+can be given.}
+    \item{\code{promote_to_multi}}{logical; in case of a mix of Point and MultiPoint, or
+of LineString and MultiLineString, or of Polygon and MultiPolygon, convert
+all to the Multi variety; defaults to \code{TRUE}}
+    \item{\code{stringsAsFactors}}{logical; should character vectors be
+converted to factors?  Default for \code{read_sf} or R version >= 4.1.0 is
+\code{FALSE}, for \code{st_read} and R version < 4.1.0 equal to
+\code{default.stringsAsFactors()}}
+    \item{\code{int64_as_string}}{logical; if \code{TRUE}, Int64 attributes are returned as
+string; if \code{FALSE}, they are returned as double and a warning is given when
+precision is lost (i.e., values are larger than 2^53).}
+    \item{\code{check_ring_dir}}{logical; if \code{TRUE}, polygon ring directions are checked
+and if necessary corrected (when seen from above: exterior ring counter
+clockwise, holes clockwise)}
+    \item{\code{fid_column_name}}{character; name of column to write feature IDs to; defaults to not doing this}
+    \item{\code{drivers}}{character; limited set of driver short names to be tried (default: try all)}
+    \item{\code{wkt_filter}}{character; WKT representation of a spatial filter (may be used as bounding box, selecting overlapping geometries); see examples}
+    \item{\code{optional}}{logical; passed to \link[base]{as.data.frame}; always \code{TRUE} when \code{as_tibble} is \code{TRUE}}
+    \item{\code{use_stream}}{Use \code{TRUE} to use the experimental columnar interface introduced in GDAL 3.6.}
+    \item{\code{as_tibble}}{logical; should the returned table be of class tibble or data.frame?}
+    \item{\code{EWKB}}{logical; is the WKB of type EWKB? if missing, defaults to
+\code{TRUE}}
   }}
 }
 \value{

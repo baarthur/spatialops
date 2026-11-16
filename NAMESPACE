@@ -2,7 +2,6 @@
 
 export("%>%")
 export(binary_sets)
-export(coef_rqs)
 export(count_features)
 export(dist_nearest)
 export(geom_bbox)
@@ -13,7 +12,6 @@ export(get_osm_postcodes)
 export(get_osm_rail)
 export(get_osm_roads)
 export(get_rais)
-export(gg_rqs)
 export(maphub_tidy_lines)
 export(maphub_tidy_stations)
 export(maphub_to_sf)
@@ -27,39 +25,47 @@ export(trinary_sets)
 import(dplyr)
 import(ggplot2)
 import(osmdata)
-import(quantreg)
 import(sf)
 import(tidyr)
 importFrom(basedosdados,download)
-importFrom(dplyr,bind_cols)
-importFrom(dplyr,bind_rows)
-importFrom(dplyr,filter)
-importFrom(dplyr,left_join)
-importFrom(dplyr,mutate)
-importFrom(dplyr,pull)
-importFrom(dplyr,relocate)
-importFrom(dplyr,rename)
+importFrom(dplyr,
+  bind_cols,
+  filter,
+  left_join,
+  mutate,
+  pull,
+  relocate,
+  rename
+)
 importFrom(ggplot2,coord_sf)
-importFrom(h3jsr,cell_to_polygon)
-importFrom(h3jsr,polygon_to_cells)
+importFrom(h3jsr,
+  cell_to_polygon,
+  polygon_to_cells
+)
 importFrom(magrittr,"%>%")
-importFrom(purrr,map)
-importFrom(rlang,":=")
-importFrom(rlang,.data)
-importFrom(rlang,enquo)
-importFrom(rlang,quo_is_null)
-importFrom(sf,st_as_sf)
-importFrom(sf,st_bbox)
-importFrom(sf,st_buffer)
-importFrom(sf,st_centroid)
-importFrom(sf,st_crs)
-importFrom(sf,st_nearest_feature)
-importFrom(sf,st_transform)
-importFrom(sf,st_union)
-importFrom(tibble,as_tibble)
-importFrom(tibble,rowid_to_column)
-importFrom(tibble,tibble)
+importFrom(rlang,
+  ":=",
+  .data,
+  enquo,
+  quo_is_null
+)
+importFrom(sf,
+  st_as_sf,
+  st_bbox,
+  st_buffer,
+  st_centroid,
+  st_crs,
+  st_nearest_feature,
+  st_transform,
+  st_union
+)
+importFrom(tibble,
+  rowid_to_column,
+  tibble
+)
 importFrom(tidyr,crossing)
-importFrom(units,as_units)
-importFrom(units,drop_units)
+importFrom(units,
+  as_units,
+  drop_units
+)
 importFrom(utils,unzip)
