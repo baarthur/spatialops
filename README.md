@@ -10,12 +10,10 @@
 
 Built mainly upon the `{sf}` and `{tidyverse}` frameworks, the functions in this package focus on reusable spatial operations. Some use cases:
 
-* read shapefiles directly from a `.zip` whithout creating a mess in your folders with `shp_extract_read`
 * calculate the distance between the closest `y` feature from an `x` set of features with `dist_nearest`
 
 
-The MapHub-specific helpers were removed from the current API. The Mendeley Data deposit *Rapid Transit, Labor Market, and Business Growth* uses `maphub_to_sf()`; for that call, install the pre-removal revision with `remotes::install_github("baarthur/spatialops@5d025ddd5255606eeb7d2f25a0fc7af4e8c01ce0")`. The MapHub helpers are planned for a separate personal package.
-
+The MapHub-specific helpers `maphub_to_sf()`, `maphub_tidy_lines()`, and `maphub_tidy_stations()` remain available while their long-term home is decided. `maphub_to_sf()` is used by the published *Rapid Transit, Labor Market, and Business Growth* data workflow.
 ## Installation
 
 You can install the development version of spatialops with `remotes`:

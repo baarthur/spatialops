@@ -7,15 +7,19 @@ export(dist_nearest)
 export(geom_bbox)
 export(geom_sf_toscale)
 export(get_h3_grid)
+export(maphub_tidy_lines)
+export(maphub_tidy_stations)
+export(maphub_to_sf)
 export(ring_sets)
-export(shp_extract_read)
 export(summarise_set)
 export(theme_abnq)
 export(theme_abnq_map)
 export(trim_set)
 export(trinary_sets)
+import(dplyr)
 import(ggplot2)
 import(sf)
+import(tidyr)
 importFrom(dplyr,
   bind_cols,
   filter,
@@ -56,4 +60,3 @@ importFrom(units,
   as_units,
   drop_units
 )
-importFrom(utils,unzip)
