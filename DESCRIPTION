@@ -12,8 +12,6 @@ Roxygen: list(markdown = TRUE)
 Imports: 
     dplyr,
     ggplot2,
-    h3jsr,
-    magrittr,
     purrr,
     rlang,
     sf,
@@ -21,7 +19,7 @@ Imports:
     tidyr,
     units
 Depends: 
-  R (>= 2.10)
+  R (>= 4.1.0)
 Suggests: 
     knitr,
     scales,

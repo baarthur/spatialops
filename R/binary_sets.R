@@ -49,6 +49,5 @@ binary_sets <- function(df, cat1, cat2, cat1_order = NULL) {
   set_1 <- summarise_set(df, {{cat1}}, {{cat2}}, cat1_order, 1)
   set_2 <- summarise_set(df, {{cat1}}, {{cat2}}, cat1_order, 2)
 
-  trim_set(set_1, set_2, {{cat1}}, F) %>%
-    return()
+  trim_set(set_1, set_2, {{cat1}}, F)
 }

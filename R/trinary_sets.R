@@ -40,9 +40,8 @@ trinary_sets <- function(df, cat1, cat2, cat1_order = NULL) {
   set_2 <- trim_set(set_1, set_2, {{cat1}})
   set_3 <- trim_set(set_1, set_3, {{cat1}})
 
-  dplyr::bind_rows(set_2, set_3) %>%
-    trim_set(set_1, {{cat1}}, F) %>%
-    return()
+  dplyr::bind_rows(set_2, set_3) |>
+    trim_set(set_1, {{cat1}}, F)
 
 }
 

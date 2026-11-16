@@ -28,7 +28,7 @@ A \code{ggplot} object
 \examples{
 \dontrun{
 data(mtcars)
-p <- mtcars \%>\%
+p <- mtcars |>
   ggplot() +
   geom_point(
     aes(x = hp, y = mpg, color = factor(am))

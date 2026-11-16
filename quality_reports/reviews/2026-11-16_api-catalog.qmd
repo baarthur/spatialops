@@ -1,0 +1,50 @@
+---
+title: 'Catálogo inicial da API pública do spatialops'
+format: html
+---
+
+# Catálogo inicial da API pública do spatialops
+
+Data: 2026-11-16. Escopo: 24 símbolos exportados em `NAMESPACE` (inclui `%>%`). Este é um inventário para decisão, não uma decisão de remoção. Classificação baseada em código, documentação e usos internos do repositório; uso por terceiros ainda é desconhecido.
+
+| Função | Enquadramento | Proposta inicial | Evidência e observação |
+|---|---|---|---|
+| `coef_rqs` | Fora de foco | Remover junto com `gg_rqs` | Formata coeficientes de regressão quantílica, sem operação espacial. `R/coef_rqs.R`; citada no README. |
+| `gg_rqs` | Fora de foco | Remover junto com `coef_rqs` | Gráfico de regressão quantílica; depende da anterior. `R/gg_rqs.R`. |
+| `theme_abnq` | Fora de foco, reutilizável | Migrar para pacote de temas/gráficos | Tema ggplot genérico. `R/theme_abnq.R`. |
+| `theme_abnq_map` | Limítrofe | Migrar com `theme_abnq` | Tema de mapas, mas é identidade visual, sem operação espacial. `R/theme_abnq.R`. |
+| `get_rais` | Fora de foco | Removida em `dev` | Download SQL específico da RAIS; código, export e documentação removidos. |
+| `geom_sf_rais` | Específica da RAIS | Removida em `dev` | Camada cartográfica com rótulos e fonte RAIS codificados; código, export e documentação removidos. |
+| `maphub_to_sf` | Espacial, integração específica | Decidir conforme uso atual | Converte descrição MapHub em colunas `sf`; útil, porém acoplada ao formato MapHub. `R/maphub_to_sf.R:23`; citada no README. |
+| `maphub_tidy_lines` | Fora de foco, específica do projeto de transporte | Remover/migrar | Supõe campos `empresa`, `numero_linha`, `inaugura`. `R/maphub_to_sf.R:54`. |
+| `maphub_tidy_stations` | Fora de foco, específica do projeto de transporte | Remover/migrar | Supõe campos `nome_est`, `numero_linha`, `inaugura`, `status`. `R/maphub_to_sf.R:77`. |
+| `get_osm_roads` | Espacial, wrapper estreito | Reavaliar manutenção | Consulta OSM com seleção fixa de categorias; requer rede. `R/get_osm.R:37`. |
+| `get_osm_postcodes` | Espacial, wrapper estreito | Reavaliar manutenção | Consulta OSM específica; requer rede. `R/get_osm.R:70`. |
+| `get_osm_rail` | Espacial, wrapper estreito | Reavaliar manutenção | Consulta OSM específica; vignette chama sem `bbox` obrigatório. `R/get_osm.R:104`, `vignettes/spatialops.Rmd:64`. |
+| `geom_bbox` | Cartografia espacial, uso recorrente | Manter como API pública | O autor usa a função em vários pipelines. Revisar eventual nome/API separadamente, preservando compatibilidade. `R/geom_bbox.R:18`. |
+| `geom_sf_toscale` | Cartografia espacial | Manter, revisar API | Combina `geom_sf` e `coord_sf` por centroide e buffer. `R/geom_sf_toscale.R:26`. |
+| `get_h3_grid` | Núcleo espacial | Manter, revisar contrato | Gera grade H3 a partir de polígonos; revisar comportamento de buffer em longitude/latitude e `crop = FALSE`. `R/get_h3_grid.R:43`. |
+| `count_features` | Núcleo espacial | Manter, testar | Contagem por predicado e buffer; verificar CRS, unidades, geometrias vazias e tipos de retorno. `R/count_features.R:15`. |
+| `dist_nearest` | Núcleo espacial | Manter e avaliar migração da implementação DuckDB Spatial | O autor adaptou a função no projeto de transporte e pretende trazê-la para este pacote. Antes da migração, definir interface, dependências, CRS e equivalência de resultados. `R/dist_nearest.R:29`. |
+| `shp_extract_read` | I/O espacial | Manter, revisar | Lê shapefile em ZIP; extração temporária e seleção de arquivo exigem testes de erro e múltiplos SHP. `R/shp_extract_read.R:15`. |
+| `binary_sets` | Operação espacial de áreas | Manter se o caso de uso for geral | Diferença/união de conjuntos espaciais por categorias; exige geometria chamada `geometry`. `R/binary_sets.R:24`. |
+| `trinary_sets` | Operação espacial de áreas | Manter se o caso de uso for geral | Variante de três categorias; mesma restrição de geometria. `R/trinary_sets.R:23`. |
+| `ring_sets` | Operação espacial de áreas | Manter se o caso de uso for geral | Constrói anéis por categorias ordenadas; revisar ordenação e casos degenerados. `R/ring_sets.R:15`. |
+| `summarise_set` | Auxiliar interno dos conjuntos | Deixar interno após checar consumidores | Exportado, mas usado como etapa de `binary_sets`, `trinary_sets` e `ring_sets`. `R/utils.R:20`. |
+| `trim_set` | Auxiliar interno dos conjuntos | Deixar interno após checar consumidores | Exportado, mas usado como etapa de operações de conjuntos. `R/utils.R:57`. |
+| `%>%` | Reexportação genérica | Reavaliar | Não é operação espacial; sua retirada pode quebrar código de usuários. `R/utils-pipe.R`. |
+
+## Dependências e dados afetados
+
+- Remover `coef_rqs`/`gg_rqs` pode eliminar `quantreg` de `Imports` após verificar outros usos.
+- A remoção de `get_rais` e `geom_sf_rais` permitiu retirar `basedosdados` e `colorspace` de `Imports`. O dataset `rais_fortaleza` também foi removido.
+- Os datasets remanescentes `fortaleza` e `metrofor` também merecem revisão de escopo, tamanho e licença; não são funções, portanto ficam fora das 24 linhas.
+- Não há diretório `tests/` no checkout atual. O autor informou que `geom_bbox` é usado em vários pipelines; preservar sua API. A adaptação de `dist_nearest` encontrada em outro projeto também é do autor e será candidata à migração para cá. Isso não constitui evidência de usuários externos independentes.
+
+## Sequência sugerida de decisões
+
+1. Remoção de `coef_rqs`/`gg_rqs` concluída pelo autor na branch `dev`.
+2. `theme_abnq` e `theme_abnq_map` irão para o futuro pacote `abnquarto`, de templates para publicação ABNT com Quarto. Preparar o novo repositório antes de removê-las daqui.
+3. `get_rais` e `geom_sf_rais` foram removidas. O autor também concluiu a decisão de retirar do escopo as funções específicas de transporte/MapHub; conferir sua limpeza no código.
+4. Escopo definido: operações espaciais. `count_features`, `dist_nearest` e operações de conjuntos (`ring_sets`, `binary_sets` e relacionadas) são o núcleo. Consultas de dados e cartografia devem ser revistas conforme esse limite, preservando contratos em uso, como `geom_bbox`.
+5. A limpeza de exports, documentação, dependências, README, vignette e exemplos já começou e deve continuar conforme as remoções. Depois da limpeza básica, investigar redundâncias no núcleo. Considerar depreciação se houver usuários externos.

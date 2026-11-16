@@ -30,12 +30,12 @@ summarise_set <- function(df, cat1, cat2, cat1_order = NULL, order) {
     }
   } else cat1_order
 
-  df %>%
-    dplyr::filter({{cat1}} == cat1_order[order]) %>%
-    sf::st_make_valid() %>%
-    dplyr::group_by({{cat1}}, {{cat2}}) %>%
-    dplyr::summarise(geometry = sf::st_union(geometry)) %>%
-    sf::st_difference() %>%
+  df |>
+    dplyr::filter({{cat1}} == cat1_order[order]) |>
+    sf::st_make_valid() |>
+    dplyr::group_by({{cat1}}, {{cat2}}) |>
+    dplyr::summarise(geometry = sf::st_union(geometry)) |>
+    sf::st_difference() |>
     sf::st_make_valid()
 }
 
@@ -55,14 +55,14 @@ summarise_set <- function(df, cat1, cat2, cat1_order = NULL, order) {
 #' This function is not intended do be used isolatedly, it is a part of binary_sets and trinary_sets.
 
 trim_set <- function(ref, set, cat1, remove_ref = TRUE) {
-  df <- dplyr::bind_rows(ref, set) %>%
-    dplyr::group_by({{cat1}}) %>%
-    sf::st_make_valid() %>%
-    sf::st_difference() %>%
+  df <- dplyr::bind_rows(ref, set) |>
+    dplyr::group_by({{cat1}}) |>
+    sf::st_make_valid() |>
+    sf::st_difference() |>
     sf::st_make_valid()
 
   if(remove_ref) {
-    df %>%
+    df |>
       dplyr::filter(!{{cat1}} %in% dplyr::pull(ref, {{cat1}}))
   } else
     df

@@ -34,7 +34,7 @@ data("metrofor")
 # select only stations
 metrofor <- dplyr::filter(metrofor, railway == "station")
 
-fortaleza <- fortaleza %>% 
+fortaleza <- fortaleza |> 
   dist_nearest(metrofor, name = dist_metro)
 ```
 

@@ -16,7 +16,7 @@
 
 
 geom_bbox <- function(data) {
-  bbox <- data %>% st_bbox
+  bbox <- data |> st_bbox()
   coord_sf(xlim = c(bbox[1], bbox[3]), ylim = c(bbox[2], bbox[4]))
 }
 

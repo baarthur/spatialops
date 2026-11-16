@@ -22,20 +22,20 @@
 
 maphub_to_sf <- function(data, values = description, key_sep = ": ", pair_sep = "\n") {
   description <- key <- value <- NULL
-  data <- data %>%
+  data <- data |>
     separate_longer_delim(
       {{values}},
       delim = pair_sep
-    ) %>%
+    ) |>
     separate_wider_delim(
       {{values}},
       delim = key_sep,
       names = c("key", "value")
-    ) %>%
+    ) |>
     pivot_wider(
       names_from = key,
       values_from = value
-    ) %>%
+    ) |>
     st_as_sf()
 }
 
@@ -53,13 +53,13 @@ maphub_to_sf <- function(data, values = description, key_sep = ": ", pair_sep = 
 
 maphub_tidy_lines <- function(data) {
   title <- stroke <- geometry <- empresa <- numero_linha <- inaugura <- NULL
-  data <- data %>%
-    select(-title) %>%
-    relocate(stroke:geometry, .after = everything()) %>%
-    relocate(empresa:numero_linha, .before = everything()) %>%
-    rename(color = stroke) %>%
-    mutate(inaugura = as.numeric(inaugura)) %>%
-    mutate(numero_linha = as.numeric(numero_linha)) %>%
+  data <- data |>
+    select(-title) |>
+    relocate(stroke:geometry, .after = everything()) |>
+    relocate(empresa:numero_linha, .before = everything()) |>
+    rename(color = stroke) |>
+    mutate(inaugura = as.numeric(inaugura)) |>
+    mutate(numero_linha = as.numeric(numero_linha)) |>
     arrange(inaugura)
 }
 
@@ -76,13 +76,13 @@ maphub_tidy_lines <- function(data) {
 
 maphub_tidy_stations <- function(data) {
   title <- marker.color <- geometry <- nome_est <- numero_linha <- inaugura <- status <- NULL
-  data <- data %>%
-    select(-title) %>%
-    relocate(c(marker.color:geometry), .after = everything()) %>%
-    relocate(nome_est, .after = numero_linha) %>%
-    relocate(inaugura, .before = status) %>%
-    rename(color = marker.color) %>%
-    mutate(inaugura = as.numeric(inaugura)) %>%
-    mutate(numero_linha = as.numeric(numero_linha)) %>%
+  data <- data |>
+    select(-title) |>
+    relocate(c(marker.color:geometry), .after = everything()) |>
+    relocate(nome_est, .after = numero_linha) |>
+    relocate(inaugura, .before = status) |>
+    rename(color = marker.color) |>
+    mutate(inaugura = as.numeric(inaugura)) |>
+    mutate(numero_linha = as.numeric(numero_linha)) |>
     arrange(inaugura)
 }

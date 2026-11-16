@@ -1,0 +1,18 @@
+---
+title: 'Remover funções RAIS fora do escopo'
+format: html
+---
+
+Status: COMPLETED
+
+## Escopo
+Remover `get_rais()` e `geom_sf_rais()` da API. Manter `rais_fortaleza` até decisão específica sobre dados. Atualizar dependências, documentação gerada e catálogo.
+
+## Verificação
+Rodar `devtools::document()` ou `roxygen2::roxygenise()`, checar referências restantes e executar `devtools::check()` se possível.
+
+## Resultado
+Código e documentação removidos; asedosdados e colorspace retirados de Imports. Não foi possível executar devtools::document() ou devtools::check() neste shell porque os pacotes não estão instalados nesta biblioteca R.
+
+## Decisão posterior
+O autor decidiu remover também o dataset ais_fortaleza. Foram apagados o objeto em data/, a fonte roxygen em R/ e a página gerada em man/.

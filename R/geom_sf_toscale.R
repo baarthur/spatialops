@@ -26,10 +26,10 @@
 geom_sf_toscale <- function(data, dist, col_ref = NULL, ref = NULL, ...) {
 
   data <- if(!quo_is_null(enquo(col_ref)) & !is.null(ref)) {
-    data %>% filter({{col_ref}} %in% ref)
+    data |> filter({{col_ref}} %in% ref)
   } else {data}
 
-  bbox <- data %>% st_union() %>% st_centroid() %>% st_buffer(dist) %>% st_bbox()
+  bbox <- data |> st_union() |> st_centroid() |> st_buffer(dist) |> st_bbox()
 
   list(
     geom_sf(data = data, ...),
@@ -40,7 +40,7 @@ geom_sf_toscale <- function(data, dist, col_ref = NULL, ref = NULL, ...) {
 # tester <- function(data, col_ref = NULL, ref = NULL) {
 #
 #   if(!rlang::quo_is_null(enquo(col_ref)) & !is.null(ref)) {
-#     data %>% filter({{col_ref}} %in% ref)
+#     data |> filter({{col_ref}} %in% ref)
 #   } else print("null")
 #
 # }

@@ -28,28 +28,27 @@
 
 dist_nearest <- function(x, y, name, id_feature = F, geometry = geometry, drop_units = T) {
 
-  closest <- st_nearest_feature(x, y) %>%
-    tibble(id_closest = `.`)
+  closest <- tibble(id_closest = st_nearest_feature(x, y))
 
-  distance <- closest %>%
-    left_join(rowid_to_column(y, "id_closest")) %>%
-    st_as_sf() %>%
+  distance <- closest |>
+    left_join(rowid_to_column(y, "id_closest")) |>
+    st_as_sf() |>
     st_transform(crs = st_crs(y))
 
   if(missing(name)) {
-    x <- x %>%
-      mutate(distance = st_distance(distance, ., by_element = TRUE), .before = geometry)
+    x <- x |>
+      mutate(distance = st_distance(distance, x, by_element = TRUE), .before = geometry)
   } else {
-    x <- x %>%
-      mutate({{name}} := st_distance(distance, ., by_element = TRUE), .before = geometry)
+    x <- x |>
+      mutate({{name}} := st_distance(distance, x, by_element = TRUE), .before = geometry)
   }
 
   if(drop_units) {
-    x <- x %>% drop_units()
+    x <- x |> drop_units()
   }
 
   if(id_feature) {
-    x <- x %>% bind_cols(closest)
+    x <- x |> bind_cols(closest)
   }
 
   return(x)

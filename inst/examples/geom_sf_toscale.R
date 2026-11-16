@@ -14,8 +14,8 @@ ggplot() +
 library(dplyr)
 library(purrr)
 
-p <- fortaleza[1:2,] %>%
-  pull(name_neigh) %>%
+p <- fortaleza[1:2,] |>
+  pull(name_neigh) |>
   map(
     \(x) ggplot() +
       geom_sf(data = fortaleza, fill = "white") +
