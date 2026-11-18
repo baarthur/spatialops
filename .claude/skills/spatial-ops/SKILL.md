@@ -1,0 +1,1 @@
+Read and follow `.agents/skills/spatial-ops/SKILL.md`.

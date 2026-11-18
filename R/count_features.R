@@ -16,24 +16,22 @@ count_features <- function(x, y, radius, predicate = st_intersects, name) {
   if(missing(radius)){
     df <- predicate(x, y)
   } else {
-    df <- st_buffer(x, radius) %>%
+    df <- st_buffer(x, radius) |>
       predicate(y)
   }
 
-  df <- df %>%
-    lengths() %>%
-    tibble()
+  df <- tibble(. = lengths(df))
 
   if(missing(name)) {
-    df <- df %>%
+    df <- df |>
       rename("n_features" := `.`)
   } else {
-    df <- df %>%
+    df <- df |>
       rename({{name}} := `.`)
   }
 
-  df <- df %>%
-    bind_cols(x) %>%
+  df <- df |>
+    bind_cols(x) |>
     st_as_sf()
 
   return(df)

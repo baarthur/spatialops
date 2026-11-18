@@ -54,9 +54,14 @@ rsconnect/
 
 # data sources
 data-raw/*
+!data-raw/metrofor.R
 inst/doc
 /doc/
 /Meta/
 
 # old files
 */old
+
+# compiled quality reports
+quality_reports/**/*.html
+quality_reports/**/*_files/

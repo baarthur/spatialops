@@ -8,14 +8,12 @@
 
 ## Spatialops: spatial operations that come in handy
 
-Built mainly upon the `{sf}` and `{tidyverse}` frameworks, the functions in this package range from simple reading/tidying wrappers to specific spatial operations and random utilities I have used along my journey. Some use cases: 
+Built mainly upon the `{sf}` and `{tidyverse}` frameworks, the functions in this package focus on reusable spatial operations. Some use cases:
 
-* read shapefiles directly from a `.zip` whithout creating a mess in your folders with `shp_extract_read`
 * calculate the distance between the closest `y` feature from an `x` set of features with `dist_nearest`
-* need to manually tidy your shapefiles (e.g. nudge a geometry)? No problem, load them into [MapHub](https://maphub.net/) and then convert the description into useful columns using `maphub_to_sf`
-* `gg`plot quantile regression coefficients with `coef_rqs`
 
 
+The MapHub-specific helpers `maphub_to_sf()`, `maphub_tidy_lines()`, and `maphub_tidy_stations()` remain available while their long-term home is decided. `maphub_to_sf()` is used by the published *Rapid Transit, Labor Market, and Business Growth* data workflow.
 ## Installation
 
 You can install the development version of spatialops with `remotes`:
@@ -36,7 +34,7 @@ data("metrofor")
 # select only stations
 metrofor <- dplyr::filter(metrofor, railway == "station")
 
-fortaleza <- fortaleza %>% 
+fortaleza <- fortaleza |> 
   dist_nearest(metrofor, name = dist_metro)
 ```
 

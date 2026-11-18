@@ -1,0 +1,1 @@
+Read and follow `.agents/skills/checkpoint/SKILL.md`.

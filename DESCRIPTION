@@ -1,6 +1,6 @@
 Package: spatialops
 Title: Spatial operations that comes in handy
-Version: 0.1.4
+Version: 0.2.0
 Authors@R: 
     person("Arthur", "Bazolli", email = "baarthur0@outlook.com", role = c("aut", "cre"))
 Description: Mainly spatial operations, like calculating distances or classifying catchment areas, 
@@ -9,26 +9,20 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
 Imports: 
-    basedosdados,
-    colorspace,
     dplyr,
     ggplot2,
-    h3jsr,
-    magrittr,
-    osmdata,
     purrr,
-    quantreg,
     rlang,
-    scales,
     sf,
     tibble,
     tidyr,
     units
 Depends: 
-  R (>= 2.10)
+  R (>= 4.1.0)
 Suggests: 
     knitr,
+    scales,
     rmarkdown
 VignetteBuilder: knitr
+Config/roxygen2/version: 8.1.1

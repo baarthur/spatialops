@@ -11,7 +11,7 @@
 #' @examples
 #' \dontrun{
 #' data(mtcars)
-#' p <- mtcars %>%
+#' p <- mtcars |>
 #'   ggplot() +
 #'   geom_point(
 #'     aes(x = hp, y = mpg, color = factor(am))
@@ -72,7 +72,7 @@ theme_abnq <- function (base_size = 10, base_family = "Times", base_line_size = 
 #' @examples
 #' \dontrun{
 #' data(mtcars)
-#' p <- mtcars %>%
+#' p <- mtcars |>
 #'   ggplot() +
 #'   geom_point(
 #'     aes(x = hp, y = mpg, color = factor(am))

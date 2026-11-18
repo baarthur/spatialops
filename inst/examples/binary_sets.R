@@ -1,4 +1,3 @@
-library(magrittr)
 
 # Generate data
 pts <- sf::st_sfc(
@@ -7,13 +6,13 @@ pts <- sf::st_sfc(
   sf::st_point(c(1,-1)),
   sf::st_point(c(-1,1)),
   sf::st_point(c(-1,-1))
-) %>%
-  sf::st_as_sf() %>%
+) |>
+  sf::st_as_sf() |>
   cbind(inaug = c(1970, 1980, 1990, 2000, 2010),
-        status = c("Always treated", "Always treated", "Treated", "Treated", "Never treated")) %>%
+        status = c("Always treated", "Always treated", "Treated", "Treated", "Never treated")) |>
   dplyr::rename(geometry = x)
 
-df <- pts %>% sf::st_buffer(1.25)
+df <- pts |> sf::st_buffer(1.25)
 
 
 # Make binary sets

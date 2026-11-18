@@ -5,3 +5,12 @@
 ^\.github$
 ^doc$
 ^Meta$
+^AGENTS\.md$
+^CLAUDE\.md$
+^MEMORY\.md$
+^BACKLOG\.md$
+^CHANGELOG\.md$
+^\.agents$
+^\.claude$
+^templates$
+^quality_reports$

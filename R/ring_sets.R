@@ -15,7 +15,7 @@
 ring_sets <- function(df, cat1, cat2) {
   levels <- sort(unique(dplyr::pull(df, {{cat1}})))
 
-  rings <- rev(seq(levels)) %>%
+  rings <- rev(seq(levels)) |>
     purrr::map(
       \(x) summarise_set(df, {{cat1}}, {{cat2}}, order = x)
     )
@@ -23,6 +23,6 @@ ring_sets <- function(df, cat1, cat2) {
   rings <- purrr::map2(
     rings[-length(rings)], rings[-1],
     \(x, y) trim_set(y, x, {{cat1}})
-  ) %>%
+  ) |>
     dplyr::bind_rows(rings[length(rings)])
 }

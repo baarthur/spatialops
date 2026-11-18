@@ -17,7 +17,7 @@ theme_abnq_map(base_size = 10, base_family = "Times")
 \examples{
 \dontrun{
 data(mtcars)
-p <- mtcars \%>\%
+p <- mtcars |>
   ggplot() +
   geom_point(
     aes(x = hp, y = mpg, color = factor(am))
